@@ -1,0 +1,9 @@
+{
+  "appId": "com.tiimo.app",
+  "appName": "Tiimo",
+  "webDir": "public",
+  "server": {
+    "url": "http://127.0.0.1:6363",
+    "cleartext": true
+  }
+}

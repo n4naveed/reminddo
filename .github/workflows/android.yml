@@ -16,7 +16,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 22
 
       - name: Setup Java
         uses: actions/setup-java@v3
@@ -32,6 +32,9 @@ jobs:
 
       - name: Sync Capacitor
         run: npx cap sync android
+
+      - name: Make Gradlew Executable
+        run: chmod +x android/gradlew
 
       - name: Build APK with Gradle
         working-directory: android

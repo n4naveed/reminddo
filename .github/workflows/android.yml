@@ -31,7 +31,9 @@ jobs:
         run: npm install
 
       - name: Build Web Assets
-        run: npm run build
+        run: |
+          npm run build
+          rm -rf public/storage
 
       - name: Sync Capacitor
         run: npx cap sync android

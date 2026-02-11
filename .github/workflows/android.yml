@@ -24,6 +24,9 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
       - name: Install Dependencies
         run: npm install
 
@@ -33,12 +36,15 @@ jobs:
       - name: Sync Capacitor
         run: npx cap sync android
 
+      - name: Checklist Android
+        run: ls -l android
+
       - name: Make Gradlew Executable
         run: chmod +x android/gradlew
 
       - name: Build APK with Gradle
         working-directory: android
-        run: ./gradlew assembleDebug
+        run: ./gradlew assembleDebug --stacktrace --info
 
       - name: Upload APK
         uses: actions/upload-artifact@v4

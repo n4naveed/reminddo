@@ -23,7 +23,7 @@ class GeminiService implements AIServiceContract
             return ['error' => 'API Key is missing. Please configure GEMINI_API_KEY in .env'];
         }
 
-        $systemPrompt = "You are an expert scheduler for the Tiimo app. 
+        $systemPrompt = "You are an expert scheduler for the Reminddo app. 
          Your goal is to organize a chaotic to-do list into a structured, visual day plan.
          
          Rules:

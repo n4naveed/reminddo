@@ -3,20 +3,20 @@ import { ref } from 'vue';
 
 const faqItems = [
     {
-        question: "How much does Tiimo cost?",
-        answer: "Tiimo offers a free version with access to essential features like planning tools, to-do lists, and the focus timer. We also offer a 7-day free trial of Tiimo Pro, which unlocks premium tools like AI task breakdown, custom widgets, and advanced scheduling options."
+        question: "How much does Reminddo cost?",
+        answer: "Reminddo offers a free version with access to essential features like planning tools, to-do lists, and the focus timer. We also offer a 7-day free trial of Reminddo Pro, which unlocks premium tools like AI task breakdown, custom widgets, and advanced scheduling options."
     },
     {
-        question: "What makes Tiimo different?",
-        answer: "Tiimo was built by and for neurodivergent people from the start, not as a trend, but as a mission. Our tools are rooted in executive functioning research, designed to reduce friction and make planning actually stick. No clutter, no pressure, just science-backed support that adapts to how your brain works."
+        question: "What makes Reminddo different?",
+        answer: "Reminddo was built by and for neurodivergent people from the start, not as a trend, but as a mission. Our tools are rooted in executive functioning research, designed to reduce friction and make planning actually stick. No clutter, no pressure, just science-backed support that adapts to how your brain works."
     },
     {
-        question: "Does Tiimo protect my data and privacy?",
-        answer: "Yes. Tiimo is 100% ad-free and never sells your data. We only collect what’s needed to run the app smoothly and securely. Your information is protected under GDPR."
+        question: "Does Reminddo protect my data and privacy?",
+        answer: "Yes. Reminddo is 100% ad-free and never sells your data. We only collect what’s needed to run the app smoothly and securely. Your information is protected under GDPR."
     },
     {
-        question: "Is Tiimo right for me?",
-        answer: "If you’ve ever felt overwhelmed by planning apps or struggled with focus, follow-through, or building routines, Tiimo is made for you. Whether you’re managing work, school, or daily life, our tools are flexible, visual, and designed to help you plan in a way that actually works."
+        question: "Is Reminddo right for me?",
+        answer: "If you’ve ever felt overwhelmed by planning apps or struggled with focus, follow-through, or building routines, Reminddo is made for you. Whether you’re managing work, school, or daily life, our tools are flexible, visual, and designed to help you plan in a way that actually works."
     }
 ];
 

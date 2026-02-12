@@ -53,7 +53,6 @@ Route::middleware([
     Route::put('/tasks/{task}', [\App\Http\Controllers\TaskController::class, 'update'])->name('tasks.update');
     Route::delete('/tasks/{task}', [\App\Http\Controllers\TaskController::class, 'destroy'])->name('tasks.destroy');
     Route::patch('/checklist-items/{checklistItem}', [\App\Http\Controllers\TaskController::class, 'toggleChecklistItem'])->name('checklist-items.toggle');
-    Route::post('/moods', [\App\Http\Controllers\MoodController::class, 'store'])->name('moods.store');
     Route::post('/tasks/bulk-schedule', [\App\Http\Controllers\TaskController::class, 'bulkSchedule'])->name('tasks.bulk-schedule');
     Route::post('/tasks/bulk-store', [\App\Http\Controllers\TaskController::class, 'bulkStore'])->name('tasks.bulk-store');
     Route::post('/ai-plan', [\App\Http\Controllers\TaskController::class, 'generatePlan'])->name('ai.plan');

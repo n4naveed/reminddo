@@ -12,7 +12,7 @@ import { ZiggyVue } from 'ziggy-js';
 import { Ziggy } from './ziggy';
 window.Ziggy = Ziggy;
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+const appName = import.meta.env.VITE_APP_NAME || 'Reminddo';
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,

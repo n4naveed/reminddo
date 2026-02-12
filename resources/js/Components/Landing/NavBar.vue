@@ -14,11 +14,11 @@ defineProps({
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center">
                     <Link :href="route('welcome')" class="flex items-center gap-2">
-                        <!-- Placeholder Logo (Tiimo style circle) -->
+                        <!-- Placeholder Logo (Reminddo style circle) -->
                         <div class="w-8 h-8 rounded-full bg-[#fae8d4] border-2 border-black flex items-center justify-center">
                             <div class="w-3 h-3 bg-black rounded-full"></div>
                         </div>
-                        <span class="font-bold text-xl tracking-tight">tiimo</span>
+                        <span class="font-bold text-xl tracking-tight">reminddo</span>
                     </Link>
                 </div>
 
@@ -48,7 +48,7 @@ defineProps({
                                 :href="route('register')"
                                 class="px-5 py-2.5 bg-[#B5EAD7] text-black border-2 border-black rounded-full font-bold hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all transform hover:-translate-y-0.5"
                             >
-                                Get Tiimo
+                                Get Reminddo
                             </Link>
                         </template>
                     </div>

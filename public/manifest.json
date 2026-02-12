@@ -1,6 +1,6 @@
 {
-    "name": "Tiimo Visual Planner",
-    "short_name": "Tiimo",
+    "name": "Reminddo Visual Planner",
+    "short_name": "Reminddo",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#ffffff",

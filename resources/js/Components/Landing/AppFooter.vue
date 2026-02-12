@@ -43,13 +43,13 @@
                     <h4 class="font-bold text-lg mb-6 text-[#C7CEEA]">Get Started</h4>
                     <p class="mb-6 text-gray-400">Join over half a million people planning better.</p>
                     <a href="#" class="inline-block bg-[#FFB7B2] text-black font-bold px-6 py-3 rounded-full hover:bg-white transition border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px]">
-                        Try Tiimo free
+                        Try Reminddo free
                     </a>
                 </div>
             </div>
             
             <div class="mt-16 pt-8 border-t border-gray-700 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
-                <p>&copy; 2025 Tiimo. All rights reserved.</p>
+                <p>&copy; 2025 Reminddo. All rights reserved.</p>
                 <div class="flex space-x-6 mt-4 md:mt-0">
                     <a href="#" class="hover:text-white transition">Privacy Policy</a>
                     <a href="#" class="hover:text-white transition">Terms of Use</a>

@@ -1,6 +1,6 @@
 {
   "appId": "com.tiimo.app",
-  "appName": "Tiimo",
+  "appName": "Reminddo",
   "webDir": "public",
   "server": {
     "url": "http://127.0.0.1:6363",

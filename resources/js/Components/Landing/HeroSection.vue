@@ -14,7 +14,7 @@
             </h1>
 
             <p class="mt-4 max-w-2xl text-xl text-gray-700 leading-relaxed font-medium">
-                Tiimo turns your to-dos into doable plans with visual timelines, AI task breakdown, and tools that cut through the chaos.
+                Reminddo turns your to-dos into doable plans with visual timelines, AI task breakdown, and tools that cut through the chaos.
             </p>
 
             <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center w-full max-w-md mx-auto">

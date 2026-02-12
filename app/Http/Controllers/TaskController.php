@@ -15,11 +15,8 @@ class TaskController extends Controller
             ->orderBy('start_time')
             ->get();
 
-        $moods = auth()->user()->moods()->latest()->limit(10)->get();
-
         return \Inertia\Inertia::render('Dashboard', [
-            'tasks' => $tasks,
-            'moods' => $moods
+            'tasks' => $tasks
         ]);
     }
 

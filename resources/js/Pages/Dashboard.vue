@@ -86,20 +86,6 @@ const buildPlan = () => {
             isBuildingPlan.value = false;
             console.error(error);
             alert('AI Planning failed: ' + (error.response?.data?.error || error.message));
-        });
-};
-
-// Mood Tracking
-const showMoodModal = ref(false);
-const submitMood = (rating) => {
-    router.post('/moods', {
-        rating: rating, 
-        note: null 
-    }, {
-        onSuccess: () => {
-            showMoodModal.value = false;
-        },
-        preserveScroll: true
     });
 };
 
@@ -108,10 +94,7 @@ const props = defineProps({
         type: Array,
         default: () => [],
     },
-    moods: {
-        type: Array,
-        default: () => [],
-    },
+
 });
 
 
@@ -621,7 +604,7 @@ const scrollToBottom = () => {
 
 // Load previous history from localStorage (Mock persistence)
 onMounted(() => {
-    const saved = localStorage.getItem('tiimo_chat_history');
+    const saved = localStorage.getItem('reminddo_chat_history');
     if (saved) {
         try {
             chatHistory.value = JSON.parse(saved);
@@ -632,7 +615,7 @@ onMounted(() => {
 });
 
 const saveHistory = () => {
-    localStorage.setItem('tiimo_chat_history', JSON.stringify(chatHistory.value));
+    localStorage.setItem('reminddo_chat_history', JSON.stringify(chatHistory.value));
 };
 
 const startNewChat = () => {
@@ -1162,7 +1145,7 @@ const onTimelineDrop = (event) => {
     
     // Create Date objects
     // Assuming today for simplicity, or we should track "viewed date" in state if we had date picker.
-    // For now, Tiimo clone implies "My Day" (Today).
+    // For now, Reminddo clone implies "My Day" (Today).
     const now = new Date();
     const start = new Date(now);
     start.setUTCHours(Math.floor(hour));
@@ -1305,7 +1288,7 @@ const availableColors = {
         { hex: '#BFDBFE', bg: 'bg-blue-200', text: 'text-blue-800', border: 'border-blue-200', name: 'Blue' },
         { hex: '#E9D5FF', bg: 'bg-purple-200', text: 'text-purple-800', border: 'border-purple-200', name: 'Purple' },
     ],
-    tiimoColors: [
+    reminddoColors: [
         { hex: '#F3E8FF', bg: 'bg-purple-100', text: 'text-purple-900', border: 'border-purple-100', name: 'Lavender' },
         { hex: '#FCE7F3', bg: 'bg-pink-100', text: 'text-pink-900', border: 'border-pink-100', name: 'Rose' },
         { hex: '#FFEDD5', bg: 'bg-orange-100', text: 'text-orange-900', border: 'border-orange-100', name: 'Peach' },
@@ -1319,7 +1302,7 @@ const availableColors = {
 
 const selectedColorObj = computed(() => {
     if (!form.color) return null;
-    const all = [...availableColors.myColors, ...availableColors.tiimoColors];
+    const all = [...availableColors.myColors, ...availableColors.reminddoColors];
     const found = all.find(c => c.hex.toLowerCase() === form.color.toLowerCase());
     if (found) return found;
     return { bg: 'bg-[custom]', text: 'text-white', style: { backgroundColor: form.color } };
@@ -1327,7 +1310,7 @@ const selectedColorObj = computed(() => {
 
 const getTaskColorObj = (task) => {
     if (!task.color) return null;
-    const all = [...availableColors.myColors, ...availableColors.tiimoColors];
+    const all = [...availableColors.myColors, ...availableColors.reminddoColors];
     const found = all.find(c => c.hex.toLowerCase() === task.color.toLowerCase());
     if (found) return found;
     return { bg: 'bg-[custom]', text: 'text-white', style: { backgroundColor: task.color } };
@@ -1631,7 +1614,7 @@ onMounted(() => {
 });
 
 // Dark Mode Logic
-const isDarkMode = ref(false);
+const isDarkMode = ref(localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches));
 
 const toggleTheme = () => {
     isDarkMode.value = !isDarkMode.value;
@@ -1658,7 +1641,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <AppLayout title="Visual Planner">
+    <AppLayout title="Visual Planner" :show-nav="false">
         <template #header>
             <div class="flex flex-col md:flex-row justify-between items-center gap-4">
                 
@@ -1707,7 +1690,7 @@ onMounted(() => {
                          </div>
                     </div>
 
-                    <button @click="goToToday" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs py-1.5 px-3 rounded-lg transition uppercase tracking-wide">
+                    <button @click="goToToday" class="bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-bold text-xs py-1.5 px-3 rounded-lg transition uppercase tracking-wide">
                         Today
                     </button>
                 </div>
@@ -1772,10 +1755,6 @@ onMounted(() => {
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                     </Link>
 
-                    <button @click="showMoodModal = true" class="bg-[#Fdf4e3] dark:bg-amber-900/30 hover:bg-[#Fcebc4] dark:hover:bg-amber-900/50 text-amber-700 dark:text-amber-400 font-bold py-2 px-4 rounded-full flex items-center gap-2 transition text-sm">
-                        <span>Track mood</span>
-                        <span class="text-lg">🌼</span>
-                    </button>
                 </div>
             </div>
             
@@ -1817,7 +1796,7 @@ onMounted(() => {
                                      <span class="text-xs font-bold uppercase tracking-wider">High ({{ inboxTasksHigh.length }})</span>
                                  </div>
                                  <div v-show="sidebarSections.high" class="space-y-2 pl-2" @dragover.prevent="handleDragOver($event)" @drop="onDropPriority($event, 'high')">
-                                     <div v-if="inboxTasksHigh.length === 0" class="border-2 border-dashed border-red-100 rounded-xl p-3 text-center text-xs text-red-300 font-bold tracking-wider group/empty">
+                                     <div v-if="inboxTasksHigh.length === 0" class="border-2 border-dashed border-red-100 dark:border-gray-700 rounded-xl p-3 text-center text-xs text-red-300 dark:text-gray-600 font-bold tracking-wider group/empty">
                                           <span class="opacity-0 group-hover/empty:opacity-100 transition-opacity duration-200">Drop to add</span>
                                      </div>
                                      <div v-for="task in inboxTasksHigh" :key="task.id" draggable="true" @dragend="handleDragEnd" @dragstart="handleInboxDragStart($event, task)"
@@ -1861,7 +1840,7 @@ onMounted(() => {
                                      <span class="text-xs font-bold uppercase tracking-wider">Medium ({{ inboxTasksMedium.length }})</span>
                                  </div>
                                  <div v-show="sidebarSections.medium" class="space-y-2 pl-2" @dragover.prevent="handleDragOver($event)" @drop="onDropPriority($event, 'medium')">
-                                     <div v-if="inboxTasksMedium.length === 0" class="border-2 border-dashed border-orange-100 rounded-xl p-3 text-center text-xs text-orange-300 font-bold tracking-wider group/empty">
+                                     <div v-if="inboxTasksMedium.length === 0" class="border-2 border-dashed border-orange-100 dark:border-gray-700 rounded-xl p-3 text-center text-xs text-orange-300 dark:text-gray-600 font-bold tracking-wider group/empty">
                                           <span class="opacity-0 group-hover/empty:opacity-100 transition-opacity duration-200">Drop to add</span>
                                      </div>
                                      <div v-for="task in inboxTasksMedium" :key="task.id" draggable="true" @dragend="handleDragEnd" @dragstart="handleInboxDragStart($event, task)"
@@ -1904,7 +1883,7 @@ onMounted(() => {
                                      <span class="text-xs font-bold uppercase tracking-wider">Low ({{ inboxTasksLow.length }})</span>
                                  </div>
                                  <div v-show="sidebarSections.low" class="space-y-2 pl-2" @dragover.prevent="handleDragOver($event)" @drop="onDropPriority($event, 'low')">
-                                     <div v-if="inboxTasksLow.length === 0" class="border-2 border-dashed border-blue-100 rounded-xl p-3 text-center text-xs text-blue-300 font-bold tracking-wider group/empty">
+                                     <div v-if="inboxTasksLow.length === 0" class="border-2 border-dashed border-blue-100 dark:border-gray-700 rounded-xl p-3 text-center text-xs text-blue-300 dark:text-gray-600 font-bold tracking-wider group/empty">
                                           <span class="opacity-0 group-hover/empty:opacity-100 transition-opacity duration-200">Drop to add</span>
                                      </div>
                                      <div v-for="task in inboxTasksLow" :key="task.id" draggable="true" @dragend="handleDragEnd" @dragstart="handleInboxDragStart($event, task)"
@@ -1948,8 +1927,8 @@ onMounted(() => {
                                  </div>
                                  <div v-show="sidebarSections.todo" class="space-y-2" @dragover.prevent="handleDragOver($event)" @drop="onDropPriority($event, 'none')">
                                      <!-- Add to-do Button -->
-                                     <button @click="createInboxTask" class="w-full flex items-center gap-3 p-3 bg-white dark:bg-gray-700 border border-gray-100 dark:border-gray-600 rounded-xl text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-500 transition group">
-                                         <div class="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-lg font-bold group-hover:bg-gray-100">+</div>
+                                     <button @click="createInboxTask" class="w-full flex items-center gap-3 p-3 bg-white dark:bg-gray-700 border border-gray-100 dark:border-gray-600 rounded-xl text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white hover:border-gray-300 dark:hover:border-gray-500 hover:bg-gray-50 dark:hover:bg-gray-600 transition group">
+                                         <div class="w-8 h-8 rounded-full bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-600 flex items-center justify-center text-lg font-bold group-hover:bg-white dark:group-hover:bg-gray-700 text-purple-600 dark:text-purple-400 group-hover:scale-110 transition">+</div>
                                          <span class="font-bold text-sm">Add to-do</span>
                                      </button>
 
@@ -2040,7 +2019,7 @@ onMounted(() => {
                                 <div v-for="day in daysToDisplay" :key="day.toISOString()">
                                     <h3 class="font-serif font-bold text-xl mb-4 text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-2 sticky top-0 bg-gray-50 z-10">
                                         {{ day.toLocaleDateString('en-US', { weekday: 'long', day: 'numeric', month: 'long' }) }}
-                                        <span v-if="day.toDateString() === new Date().toDateString()" class="bg-purple-100 text-purple-600 text-xs px-2 py-1 rounded-full uppercase tracking-wider font-sans">Today</span>
+                                        <span v-if="day.toDateString() === new Date().toDateString()" class="bg-purple-100 text-purple-600 dark:bg-purple-900 dark:text-purple-300 text-xs px-2 py-1 rounded-full uppercase tracking-wider font-sans">Today</span>
                                     </h3>
                                     <div v-if="!groupedTasks[getDateKey(day)]" class="text-gray-400 italic text-sm">No tasks planned</div>
                                     <div v-else class="space-y-2">
@@ -2534,9 +2513,9 @@ onMounted(() => {
                                   </div>
 
                                   <div>
-                                      <h4 class="text-xs font-bold text-gray-500 uppercase mb-2 tracking-wider">Tiimo Colors</h4>
+                                      <h4 class="text-xs font-bold text-gray-500 uppercase mb-2 tracking-wider">Reminddo Colors</h4>
                                       <div class="flex flex-wrap gap-2">
-                                          <button v-for="color in availableColors.tiimoColors" :key="color.name"
+                                          <button v-for="color in availableColors.reminddoColors" :key="color.name"
                                                   @click="selectAppearance('color', color)"
                                                   class="w-8 h-8 rounded-full border-2 border-transparent hover:border-white transition"
                                                   :class="[color.bg]"
@@ -2761,7 +2740,7 @@ onMounted(() => {
                     <div class="bg-white dark:bg-gray-800 rounded-3xl p-4 shadow-sm space-y-4">
                         <div class="flex items-center justify-between">
                             <span class="font-bold text-gray-700 dark:text-gray-200 text-sm">Sub-tasks</span>
-                            <button type="button" class="flex items-center gap-1 bg-white border border-gray-200 rounded-full px-3 py-1 text-xs font-bold text-gray-600 hover:bg-gray-50 transition shadow-sm uppercase tracking-wide">
+                            <button type="button" class="flex items-center gap-1 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-full px-3 py-1 text-xs font-bold text-gray-600 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 transition shadow-sm uppercase tracking-wide">
                                 Suggest Breakdown 
                                 <span class="text-purple-500">✨</span>
                             </button>
@@ -2974,7 +2953,7 @@ onMounted(() => {
                      </div>
 
                      <!-- New Input Area inside View -->
-                     <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-2 flex items-center gap-2 mt-auto m-4">
+                     <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-2 flex items-center gap-2 mt-auto m-4">
                         <span class="text-green-500 p-2">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         </span>
@@ -2983,10 +2962,10 @@ onMounted(() => {
                             v-model="aiPrompt" 
                             @keydown.enter="submitAiPrompt"
                             placeholder="Ask anything ..." 
-                            class="flex-1 border-none focus:ring-0 text-lg placeholder-gray-400"
+                            class="flex-1 border-none focus:ring-0 text-lg placeholder-gray-400 dark:bg-transparent dark:text-white"
                             :disabled="isAiLoading"
                         />
-                        <button @click="submitAiPrompt" class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-gray-500 hover:bg-black hover:text-white transition">
+                        <button @click="submitAiPrompt" class="w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center text-gray-500 dark:text-gray-400 hover:bg-black hover:text-white transition">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
                         </button>
                      </div>
@@ -2999,12 +2978,12 @@ onMounted(() => {
                  <!-- "Ask anything" Pill Button -->
                  <button 
                     @click="isChatOpen = true"
-                    class="bg-white/90 backdrop-blur-md rounded-full shadow-xl border border-white/50 p-2 pl-4 pr-2 flex items-center gap-3 hover:shadow-2xl hover:scale-105 transition group"
+                    class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-md rounded-full shadow-xl border border-white/50 dark:border-white/10 p-2 pl-4 pr-2 flex items-center gap-3 hover:shadow-2xl hover:scale-105 transition group"
                  >
                      <span class="text-purple-500 text-lg animate-pulse">✨</span>
-                     <span class="text-gray-600 font-medium text-sm">Ask anything ...</span>
-                     <div class="w-8 h-8 rounded-full bg-gray-200 group-hover:bg-black group-hover:text-white flex items-center justify-center transition">
-                         <svg class="w-4 h-4 text-gray-500 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
+                     <span class="text-gray-600 dark:text-gray-300 font-medium text-sm">Ask anything ...</span>
+                     <div class="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 group-hover:bg-black group-hover:text-white flex items-center justify-center transition">
+                         <svg class="w-4 h-4 text-gray-500 dark:text-white group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
                      </div>
                  </button>
 
@@ -3023,60 +3002,44 @@ onMounted(() => {
              If mobile nav is sticky, we float above it. Nav is z-50. We can be z-50 too but higher in DOM order or z-[60]. -->
         
         <!-- Mobile Bottom Navigation -->
-        <div class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 flex justify-around items-center p-3 md:hidden z-50 text-[10px] font-bold text-gray-400">
-            <button @click="activeTab = 'todo'" class="flex flex-col items-center gap-1" :class="{ 'text-black': activeTab === 'todo' }">
-                <div class="w-6 h-6 border-2 rounded flex items-center justify-center" :class="{ 'border-black bg-black text-white': activeTab === 'todo', 'border-gray-300': activeTab !== 'todo' }">✓</div>
+        <div class="fixed bottom-0 left-0 w-full bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 flex justify-around items-center p-3 md:hidden z-50 text-[10px] font-bold text-gray-400 dark:text-gray-500">
+            <button @click="activeTab = 'todo'" class="flex flex-col items-center gap-1" :class="{ 'text-black dark:text-white': activeTab === 'todo' }">
+                <div class="w-6 h-6 border-2 rounded flex items-center justify-center" :class="{ 'border-black bg-black text-white dark:border-white dark:bg-white dark:text-black': activeTab === 'todo', 'border-gray-300 dark:border-gray-700': activeTab !== 'todo' }">✓</div>
                 <span>To-Do</span>
             </button>
-            <button @click="activeTab = 'today'" class="flex flex-col items-center gap-1" :class="{ 'text-black': activeTab === 'today' }">
-                <div class="w-6 h-6 border-2 rounded flex items-center justify-center font-serif text-xs pt-0.5" :class="{ 'border-black bg-black text-white': activeTab === 'today', 'border-gray-300': activeTab !== 'today' }">19</div>
+            <button @click="activeTab = 'today'" class="flex flex-col items-center gap-1" :class="{ 'text-black dark:text-white': activeTab === 'today' }">
+                <div class="w-6 h-6 border-2 rounded flex items-center justify-center font-serif text-xs pt-0.5" :class="{ 'border-black bg-black text-white dark:border-white dark:bg-white dark:text-black': activeTab === 'today', 'border-gray-300 dark:border-gray-700': activeTab !== 'today' }">19</div>
                 <span>Today</span>
             </button>
-            <button @click="activeTab = 'focus'; openAiPlanner()" class="flex flex-col items-center gap-1" :class="{ 'text-black': activeTab === 'focus' }">
-                 <div class="w-8 h-8 -mt-4 bg-purple-500 rounded-full flex items-center justify-center shadow-lg text-white text-lg">▶</div>
+            <button @click="activeTab = 'focus'; openAiPlanner()" class="flex flex-col items-center gap-1" :class="{ 'text-black dark:text-white': activeTab === 'focus' }">
+                 <div class="w-8 h-8 -mt-4 bg-purple-500 dark:bg-purple-600 rounded-full flex items-center justify-center shadow-lg text-white text-lg">▶</div>
                 <span>Focus</span>
             </button>
-            <button @click="activeTab = 'me'" class="flex flex-col items-center gap-1" :class="{ 'text-black': activeTab === 'me' }">
-                <div class="w-6 h-6 rounded-full bg-gray-200 border-2" :class="{ 'border-black': activeTab === 'me', 'border-transparent': activeTab !== 'me' }"></div>
+            <button @click="activeTab = 'me'" class="flex flex-col items-center gap-1" :class="{ 'text-black dark:text-white': activeTab === 'me' }">
+                <div class="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-700 border-2" :class="{ 'border-black dark:border-white': activeTab === 'me', 'border-transparent': activeTab !== 'me' }"></div>
                 <span>Me</span>
             </button>
         </div>
     </AppLayout>
 
-    <!-- Mood Tracker Modal -->
-    <div v-if="showMoodModal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-        <div class="bg-white rounded-3xl p-6 w-full max-w-sm text-center shadow-xl">
-            <h3 class="text-xl font-serif font-bold mb-6">How are you feeling?</h3>
-            <div class="flex justify-between gap-2 mb-6">
-                <button v-for="rating in 5" :key="rating" @click="submitMood(rating)" class="flex flex-col items-center gap-2 group transition transform hover:scale-110">
-                    <div class="text-4xl transition" :class="{'opacity-50 group-hover:opacity-100': true}">
-                        {{ ['😢', '😕', '😐', '🙂', '🤩'][rating - 1] }}
-                    </div>
-                    <div class="w-full h-1 bg-gray-100 rounded-full overflow-hidden mt-1">
-                        <div class="h-full bg-gradient-to-r from-red-400 to-green-400" :style="{ width: `${rating * 20}%`, opacity: 0.5 }"></div>
-                    </div>
-                </button>
-            </div>
-            <button @click="showMoodModal = false" class="text-gray-400 font-bold hover:text-black transition">Cancel</button>
-        </div>
-    </div>
-    <!-- Planning Wizard Modal -->
+
+
     <div v-if="showPlanModal" class="fixed inset-0 z-[100] flex items-end md:items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-        <div class="bg-white rounded-t-3xl md:rounded-3xl w-full max-w-md shadow-2xl flex flex-col max-h-[90vh] transition-transform">
+        <div class="bg-white dark:bg-gray-800 rounded-t-3xl md:rounded-3xl w-full max-w-md shadow-2xl flex flex-col max-h-[90vh] transition-transform">
             
             <!-- Loading State -->
             <div v-if="isBuildingPlan" class="h-96 flex flex-col items-center justify-center text-center p-8">
                 <div class="w-24 h-24 bg-purple-100 rounded-full flex items-center justify-center mb-6 animate-pulse">
                      <span class="text-4xl">🔮</span>
                 </div>
-                <h3 class="text-2xl font-serif font-bold text-gray-900 mb-2">Building your tasks...</h3>
+                <h3 class="text-2xl font-serif font-bold text-gray-900 dark:text-white mb-2">Building your tasks...</h3>
                 <p class="text-gray-500">Optimizing your schedule for the day.</p>
             </div>
 
             <!-- Selection State -->
             <div v-else class="flex flex-col h-full">
                 <div class="p-6 border-b border-gray-100 flex justify-between items-center">
-                    <h3 class="text-xl font-serif font-bold">Pick tasks for your plan</h3>
+                    <h3 class="text-xl font-serif font-bold dark:text-white">Pick tasks for your plan</h3>
                     <button @click="showPlanModal = false" class="text-gray-400 hover:text-black">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                     </button>
@@ -3087,7 +3050,7 @@ onMounted(() => {
                         v-for="task in inboxTasks" 
                         :key="task.id" 
                         class="flex items-center p-4 rounded-xl border-2 cursor-pointer transition"
-                        :class="selectedPlanTaskIds.includes(task.id) ? 'border-purple-500 bg-purple-50' : 'border-gray-100 hover:border-purple-200'"
+                        :class="selectedPlanTaskIds.includes(task.id) ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20' : 'border-gray-100 dark:border-gray-700 hover:border-purple-200 dark:hover:border-purple-800'"
                         @click="selectedPlanTaskIds.includes(task.id) ? selectedPlanTaskIds = selectedPlanTaskIds.filter(id => id !== task.id) : selectedPlanTaskIds.push(task.id)"
                     >
                         <div class="w-10 h-10 rounded-full flex items-center justify-center shadow-sm text-xl mr-4 shrink-0"
@@ -3096,7 +3059,7 @@ onMounted(() => {
                             {{ task.icon || '📌' }}
                         </div>
                         <div class="flex-1">
-                            <h4 class="font-bold text-gray-900">{{ task.title }}</h4>
+                            <h4 class="font-bold text-gray-900 dark:text-white">{{ task.title }}</h4>
                             <p class="text-xs text-gray-500 uppercase tracking-wide">To-Do</p>
                         </div>
                         <div class="w-6 h-6 rounded-full border-2 flex items-center justify-center" :class="selectedPlanTaskIds.includes(task.id) ? 'bg-purple-500 border-purple-500' : 'border-gray-300'">
@@ -3109,11 +3072,11 @@ onMounted(() => {
                     </div>
                 </div>
 
-                <div class="p-6 border-t border-gray-100 bg-gray-50 rounded-b-3xl">
+                <div class="p-6 border-t border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 rounded-b-3xl">
                     <button 
                         @click="buildPlan" 
                         :disabled="selectedPlanTaskIds.length === 0"
-                        class="w-full py-4 bg-black text-white font-bold rounded-2xl shadow-xl hover:scale-[1.02] active:scale-95 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-between px-6"
+                        class="w-full py-4 bg-black text-white dark:bg-white dark:text-black font-bold rounded-2xl shadow-xl hover:scale-[1.02] active:scale-95 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-between px-6"
                     >
                         <span>Add tasks ({{ selectedPlanTaskIds.length }})</span>
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>

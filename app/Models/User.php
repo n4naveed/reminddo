@@ -79,8 +79,5 @@ class User extends Authenticatable
         return $this->hasMany(Task::class);
     }
 
-    public function moods(): \Illuminate\Database\Eloquent\Relations\HasMany
-    {
-        return $this->hasMany(Mood::class);
-    }
+
 }

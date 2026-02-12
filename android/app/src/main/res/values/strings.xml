@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Tiimo</string>
-    <string name="title_activity_main">Tiimo</string>
+    <string name="app_name">Reminddo</string>
+    <string name="title_activity_main">Reminddo</string>
     <string name="package_name">com.tiimo.app</string>
     <string name="custom_url_scheme">com.tiimo.app</string>
 </resources>

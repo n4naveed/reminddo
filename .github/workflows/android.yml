@@ -45,12 +45,22 @@ jobs:
         run: |
           yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
-      - name: Build APK with Gradle
+      - name: Build Release Bundle
         working-directory: android
-        run: ./gradlew assembleDebug --stacktrace --info
+        run: ./gradlew bundleRelease --stacktrace --info
 
-      - name: Upload APK
+      - name: Sign Release Bundle
+        uses: r0adkll/sign-android-release@v1
+        id: sign_app
+        with:
+          releaseDirectory: android/app/build/outputs/bundle/release
+          signingKeyBase64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          alias: ${{ secrets.ANDROID_KEYSTORE_ALIAS }}
+          keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          keyPassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+
+      - name: Upload Release Bundle
         uses: actions/upload-artifact@v4
         with:
-          name: app-debug.apk
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          name: app-release.aab
+          path: ${{ steps.sign_app.outputs.signedReleaseFile }}
